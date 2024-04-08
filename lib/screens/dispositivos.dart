@@ -1,9 +1,6 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:multigeo/screens/home_screen.dart';
+import 'package:multigeo/screens/mapa.dart';
 import 'package:multigeo/theme/app_theme.dart';
-
 class DispositivosScreen extends StatelessWidget {
   
 
@@ -51,7 +48,7 @@ class DispositivosScreen extends StatelessWidget {
                   onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    MaterialPageRoute(builder: (context) => const MapaScreen()),
                   );
                 },
                   child: const Text("Localizar a Gabriel", style: TextStyle(color: Colors.white),),                     
