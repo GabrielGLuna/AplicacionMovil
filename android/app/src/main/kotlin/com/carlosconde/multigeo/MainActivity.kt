@@ -1,4 +1,4 @@
-package com.example.multigeo
+package com.carlosconde.multigeo
 
 import io.flutter.embedding.android.FlutterActivity
 

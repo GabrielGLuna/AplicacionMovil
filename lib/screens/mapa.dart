@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:multigeo/services/firebase_services.dart';
 
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);
@@ -13,20 +14,41 @@ class _MapaScreenState extends State<MapaScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  static const CameraPosition _ubicacion = CameraPosition(
-    target: LatLng(19.319064, -97.919678),
-    zoom: 14.4746,
-  );
+  FirebaseServices _firebaseServices = FirebaseServices(); // Instancia de FirebaseServices
 
-  static const CameraPosition _rastreador = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(19.319064, -97.919678),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  CameraPosition? _ubicacion;
+  CameraPosition? _rastreador;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCameraPositions();
+  }
+
+  Future<void> _loadCameraPositions() async {
+    List<Map<String, dynamic>> ubicaciones = await _firebaseServices.getLatLong();
+    if (ubicaciones.isNotEmpty) {
+      setState(() {
+        _ubicacion = CameraPosition(
+          target: LatLng(ubicaciones[0]['Lat'], ubicaciones[0]['Long']),
+          zoom: 14.4746,
+        );
+
+        _rastreador = CameraPosition(
+          bearing: 192.8334901395799,
+          target: LatLng(ubicaciones[0]['Lat'], ubicaciones[0]['Long']),
+          tilt: 59.440717697143555,
+          zoom: 19.151926040649414,
+        );
+      });
+    }
+  }
 
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_rastreador));
+    if (_rastreador != null) {
+      await controller.animateCamera(CameraUpdate.newCameraPosition(_rastreador!));
+    }
   }
 
   @override
@@ -35,18 +57,20 @@ class _MapaScreenState extends State<MapaScreen> {
       appBar: AppBar(
         title: const Text("Gabriel"),
       ),
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _ubicacion,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        }
-        ),
-    floatingActionButton: FloatingActionButton.extended(
-      onPressed: _goToTheLake, 
-      label: const Text('Rastrear!'),
-      icon: const Icon(Icons.directions_boat),
-    ),
+      body: _ubicacion != null
+          ? GoogleMap(
+              mapType: MapType.hybrid,
+              initialCameraPosition: _ubicacion!,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+            )
+          : Center(child: CircularProgressIndicator()),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _goToTheLake,
+        label: const Text('Rastrear!'),
+        icon: const Icon(Icons.directions_boat),
+      ),
     );
   }
 }

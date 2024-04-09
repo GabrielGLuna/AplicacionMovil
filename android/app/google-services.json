@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "551880581965",
+    "project_id": "multigeot-419617",
+    "storage_bucket": "multigeot-419617.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551880581965:android:82180d1593daf5d7080d04",
+        "android_client_info": {
+          "package_name": "com.carlosconde.multigeo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1RjNyhCvEcaQW6oj195D3oUA2Pk1zZ7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
