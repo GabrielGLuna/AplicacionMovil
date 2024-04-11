@@ -109,7 +109,7 @@ class Login extends StatelessWidget {
     onPressed: () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => DispositivosScreen()),
+        MaterialPageRoute(builder: (context) => const DispositivosScreen()),
       );
     },
     child: const Text('Ingresar', style: TextStyle(color: Colors.white),),

@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -33,10 +30,7 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -54,6 +48,7 @@ class DefaultFirebaseOptions {
     appId: '1:551880581965:android:82180d1593daf5d7080d04',
     messagingSenderId: '551880581965',
     projectId: 'multigeot-419617',
+    databaseURL: 'https://multigeot-419617-default-rtdb.firebaseio.com',
     storageBucket: 'multigeot-419617.appspot.com',
   );
 
@@ -62,7 +57,29 @@ class DefaultFirebaseOptions {
     appId: '1:551880581965:ios:41a364128083274e080d04',
     messagingSenderId: '551880581965',
     projectId: 'multigeot-419617',
+    databaseURL: 'https://multigeot-419617-default-rtdb.firebaseio.com',
     storageBucket: 'multigeot-419617.appspot.com',
     iosBundleId: 'com.example.multigeo',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBGvHXn07hlsrWzoRXHHOQ2Rd_5AZlN7vc',
+    appId: '1:551880581965:web:7c52ad309a6c469e080d04',
+    messagingSenderId: '551880581965',
+    projectId: 'multigeot-419617',
+    authDomain: 'multigeot-419617.firebaseapp.com',
+    databaseURL: 'https://multigeot-419617-default-rtdb.firebaseio.com',
+    storageBucket: 'multigeot-419617.appspot.com',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBGvHXn07hlsrWzoRXHHOQ2Rd_5AZlN7vc',
+    appId: '1:551880581965:web:fcd6c688bae27121080d04',
+    messagingSenderId: '551880581965',
+    projectId: 'multigeot-419617',
+    authDomain: 'multigeot-419617.firebaseapp.com',
+    databaseURL: 'https://multigeot-419617-default-rtdb.firebaseio.com',
+    storageBucket: 'multigeot-419617.appspot.com',
+  );
+
 }

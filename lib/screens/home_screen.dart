@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multigeo/screens/emergencia.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,9 +8,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('MultiGeo')),
-      body: const Column(
+      body:  Column(
         children: <Widget>[
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Text('Nombre de Dispositivo'),
@@ -19,8 +19,14 @@ class HomeScreen extends StatelessWidget {
           ),
           Column(
             children: <Widget>[
-              FloatingActionButton(onPressed: null),
-              FloatingActionButton(onPressed: null)
+              const FloatingActionButton(onPressed: null),
+              FloatingActionButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const  EmergenciaScreen()),
+                  );
+                },
+              child: const Text('Boton de emergencia'),)
             ],
           )
         ]

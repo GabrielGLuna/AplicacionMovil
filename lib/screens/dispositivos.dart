@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:multigeo/screens/mapa.dart';
 import 'package:multigeo/theme/app_theme.dart';
 class DispositivosScreen extends StatelessWidget {
-  
+  const DispositivosScreen({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
