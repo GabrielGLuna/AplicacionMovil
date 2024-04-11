@@ -34,7 +34,7 @@ class RegisterProvider extends ChangeNotifier{
     final String usernameLowerCase = username.toLowerCase();
 
     // verificar si el ususario ya existe
-    final bool userExist = await checkUserExist(usernameLowerCase);
+    final bool userExist = await checkUserExist(usernameLowerCase); 
     if(userExist){
       onError('El usuario ya existe');
       return;
