@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:multigeo/services/firebase_services.dart';
 
-
-
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);
 
@@ -21,52 +19,39 @@ class _MapaScreenState extends State<MapaScreen> {
   CameraPosition? _ubicacion;
   CameraPosition? _rastreador;
 
-  Set<Marker> _marcador = {};
-
-  @override
-  void initState() {
-    super.initState();
-    _loadCameraPositions();
-  }
-
-Future<void> _loadCameraPositions() async {
-  Map<String, dynamic> ubicacion = await _firebaseServices.getLatLong();
-  print('Ubicacion: $ubicacion');
-  if (ubicacion.isNotEmpty) {
-    double lat = double.parse(ubicacion['Lat']);
-    double long = double.parse(ubicacion['Long']);
-    print('Latitud: $lat, Longitud: $long');
-
-    setState(() {
-      _ubicacion = CameraPosition(
-        target: LatLng(lat, long),
-        zoom: 14.4746,
-      );
-
-      _rastreador = CameraPosition(
-        bearing: 192.8334901395799,
-        target: LatLng(lat, long),
-        tilt: 59.440717697143555,
-        zoom: 19.151926040649414,
-      );
-    });
-  }
+@override
+void initState() {
+  super.initState();
+  _startListeningToFirebase();
 }
+
+void _startListeningToFirebase() {
+  _firebaseServices.getLatLong().listen((ubicacion) {
+    if (ubicacion.isNotEmpty) {
+      print('Latitud: ${ubicacion['Lat']}, Longitud: ${ubicacion['Long']}');
+      setState(() {
+        _ubicacion = CameraPosition(
+          target: LatLng(ubicacion['Lat'], ubicacion['Long']),
+          zoom: 14.4746,
+        );
+
+        _rastreador = CameraPosition(
+          bearing: 192.8334901395799,
+          target: LatLng(ubicacion['Lat'], ubicacion['Long']),
+          tilt: 59.440717697143555,
+          zoom: 19.151926040649414,
+        );
+      });
+    }
+  });
+}
+
 
 
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     if (_rastreador != null) {
       await controller.animateCamera(CameraUpdate.newCameraPosition(_rastreador!));
-
-      setState((){
-        _marcador.add(
-          Marker(
-            markerId: MarkerId(_rastreador!.target.toString()),
-            position: _rastreador!.target,
-          ),
-        );
-      });
     }
   }
 
@@ -83,7 +68,6 @@ Future<void> _loadCameraPositions() async {
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
               },
-              markers: _marcador,
             )
           : Center(child: CircularProgressIndicator()),
       floatingActionButton: FloatingActionButton.extended(

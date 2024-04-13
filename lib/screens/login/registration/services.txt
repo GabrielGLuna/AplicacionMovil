@@ -1,0 +1,35 @@
+import 'dart:async';
+
+import 'package:firebase_database/firebase_database.dart';
+
+class FirebaseServices {
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.reference();
+  final StreamController<Map<String, dynamic>> _locationController =
+      StreamController.broadcast();
+
+  Stream<Map<String, dynamic>> getLatLong() {
+    // Obtener la referencia a la ubicación en la base de datos
+    DatabaseReference ubicacionReference =
+        _databaseReference.child('rastreador');
+
+    // Escuchar cambios en la ubicación
+    ubicacionReference.onValue.listen((DatabaseEvent event) {
+      print('Evento de Firebase recibido');
+      DataSnapshot dataSnapshot = event.snapshot;
+      var data = dataSnapshot.value;
+      print('Data: $data');
+      if (data != null && data is Map<String, dynamic>) {
+        var latitud = data['latitud'];
+        var longitud = data['longitud'];
+        if (latitud != null && longitud != null) {
+          _locationController.add({'Lat': latitud, 'Long': longitud});
+        }
+        
+      }
+    });
+
+    return _locationController.stream;
+    
+  }
+}
