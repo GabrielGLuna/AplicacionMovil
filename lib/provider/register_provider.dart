@@ -20,7 +20,7 @@ class RegisterProvider extends ChangeNotifier{
   required String username,
   required String email,
   required String password,
-  required UserRole rol,
+  required String rol,
   required String birth,
   required String age,
   required String  token,
@@ -90,6 +90,15 @@ class RegisterProvider extends ChangeNotifier{
   return result.docs.isNotEmpty;
  }
 
+ Future<bool> checkEmailExist(String email) async{
+  final QuerySnapshot result = await _firestore
+  .collection('users')
+  .where('email', isEqualTo: email).
+  limit(1).
+  get();
+  return result.docs.isNotEmpty;
+ }
+
  //metodo para guardar la imagen en el storage y obtener la url
  Future<String> uploadImage(String ref, File file) async{
   final UploadTask uploadTask = _storage.ref(ref).child(ref).putFile(file);
@@ -97,4 +106,6 @@ class RegisterProvider extends ChangeNotifier{
   final String url = await taskSnapshot.ref.getDownloadURL();
   return url;
  }
+
+  static of(BuildContext context, {required bool listen}) {}
 }
