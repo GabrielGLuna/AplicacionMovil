@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 enum AuthStatus{notAuthentication, chacking, authenticated}
-class LoginPProvider extends ChangeNotifier{
+class LoginProvider extends ChangeNotifier{
  final FirebaseAuth _auth  = FirebaseAuth.instance;
  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -53,4 +53,32 @@ class LoginPProvider extends ChangeNotifier{
   }
  }
 
+ //verificar el estado del usuario
+ void checkAuthState(){
+  _auth.authStateChanges().listen((User? user) {
+   if(user == null){
+    authStatus = AuthStatus.notAuthentication;
+   } else{
+    authStatus = AuthStatus.authenticated;
+   }
+   notifyListeners();
+   });
+ }
+
+
+ //obtener datos del usuario
+ Future<dynamic> getUserData(String email) async{
+  final QuerySnapshot<Map<String, dynamic>> result = await _firestore
+  .collection('users')
+  .where('email', isEqualTo: email)
+  .limit(1)
+  .get();
+
+  if(result.docs.isNotEmpty){
+   final userData = result.docs[0].data();
+   return userData;
+  }
+  return '';
+
+ }
 }

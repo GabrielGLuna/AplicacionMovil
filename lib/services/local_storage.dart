@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 class LocalStorage {
   static final LocalStorage _instance = LocalStorage._internal();
 
+
   factory LocalStorage() {
     return _instance;
   }
@@ -98,5 +99,5 @@ Future<void> savePageIndex(int index) async{
 
 int getPageIndex(){
   return _userBox.get('pageIndex', defaultValue: 0) as int;
-}
 } 
+}
