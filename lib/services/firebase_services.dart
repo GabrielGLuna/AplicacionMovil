@@ -1,28 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class FirebaseServices {
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.reference();
 
-FirebaseFirestore db = FirebaseFirestore.instance;
+  Future<Map<String, dynamic>> getLatLong() async {
+    Map<String, dynamic> ubicacion = {};
 
-//funcion que trae la informacion
-Future<List<Map<String, dynamic>>> getLatLong() async {
-  List<Map<String, dynamic>> ubicacion = [];
+    // Obtener la referencia a la ubicación en la base de datos
+    DatabaseReference ubicacionReference =
+        _databaseReference.child('rastreador');
 
-  CollectionReference collectionReferenceUbicacion = db.collection('Ubicacion');
-
-  QuerySnapshot queryUbicacion = await collectionReferenceUbicacion.get();
-
-  for (var documento in queryUbicacion.docs) {
-    Map<String, dynamic> data = documento.data() as Map<String, dynamic>;
-    if (data['Lat'] is num && data['Long'] is num) {
-      ubicacion.add({
-        'Lat': data['Lat'],
-        'Long': data['Long'],
-      });
+    // Escuchar cambios en la ubicación una sola vez
+    DataSnapshot dataSnapshot = (await ubicacionReference.once()).snapshot;
+    var data = dataSnapshot.value;
+    print('data: $data');
+    if (data != null && data is Map<dynamic, dynamic>) {
+      print('Data: $data');
+      var latitud = data['latitud'];
+      var longitud = data['longitud'];
+      if (latitud != null && longitud != null) {
+        ubicacion = {'Lat': latitud, 'Long': longitud};
+      }
     }
-  }
 
-  return ubicacion;
+    return ubicacion;
+  }
 }
-  
-}
+

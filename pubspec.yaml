@@ -45,7 +45,7 @@ dependencies:
   localstorage: ^5.0.0
   image_picker: ^1.0.8
   intl: ^0.18.1
-
+  firebase_database: ^10.5.1
 
 
 dev_dependencies:
