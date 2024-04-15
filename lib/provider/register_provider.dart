@@ -26,6 +26,7 @@ class RegisterProvider extends ChangeNotifier{
   required String  token,
   required String createAt,
   required File? image,
+  
  // required Function onSuccess,
   required Function(String) onError,
  }) async{

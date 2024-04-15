@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:multigeo/screens/dispositivos.dart';
 import 'package:multigeo/screens/login/login/login_page.dart';
 import 'package:multigeo/services/push_notification.dart';
 import 'package:provider/provider.dart';
@@ -108,6 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
         token: token!, 
         createAt: formatedDate, 
         image: image, 
+        
         onError: (error){
           showSnackbar(context, error);
         }
@@ -115,7 +117,10 @@ class _RegisterPageState extends State<RegisterPage> {
         //enviar correo de verificacion
         await FirebaseAuth.instance.currentUser!.sendEmailVerification();
         showSnackbar(context, "Confirme en su correo electronico");
-        Navigator.pushNamedAndRemoveUntil(context,"/Login", (route) => false);
+       Navigator.of(context).pushAndRemoveUntil(
+  MaterialPageRoute(builder: (context) => DispositivosScreen()),
+  (Route<dynamic> route) => false,
+);
         setState(() {
           _isLoading = false;
         });
@@ -144,7 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return 'Por favor, ingrese una contraseña válida';
   }
   // Puedes agregar otras condiciones de validación aquí, como longitud mínima, caracteres especiales, etc.
-  return ''; // No hay errores
+  return null; // No hay errores
 }
 
  String? dateValidator(String? value) {
@@ -152,20 +157,12 @@ class _RegisterPageState extends State<RegisterPage> {
       return 'Por favor, ingrese una fecha de nacimiento válida';
     }
 
-    final RegExp dateRegex = RegExp(r'^\d{2}/\d{2}/\d{4}$');
-    if (!dateRegex.hasMatch(value)) {
-      return 'Formato de fecha incorrecto. Por favor, ingrese en formato dd/mm/yyyy';
-    }
-
+  
     // Ejemplo de validación de fecha futura
-    final currentDate = DateTime.now();
-    final inputDate = DateTime.parse(value);
-    if (inputDate.isAfter(currentDate)) {
-      return 'La fecha de nacimiento no puede ser en el futuro';
-    }
-
+ 
+  
     // Si pasa todas las validaciones, retornar null indicando que no hay errores
-    return '';
+    return null;
   }
 
 
@@ -237,7 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (value == null || value.isEmpty) {
                         return 'Por favor, ingrese un usuario válido';
                       }
-                      return ''; // No hay errores
+                      return null; // No hay errores
                     },
                   ),
                     
@@ -262,7 +259,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (!value.contains('@')) {
                         return 'Ingrese una dirección de correo válida';
                       }
-                      return ''; // No hay errores
+                      return null; // No hay errores
                     },
                   ),
                     
@@ -302,7 +299,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                               )
                             : ElevatedButton(
-                                onPressed: () => submitRegister,
+                                onPressed: () => submitRegister(),
                                 child: const Text('Registrarse'),
                               ),
                     const SizedBox(height: 20),
