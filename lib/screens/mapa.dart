@@ -2,17 +2,21 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:multigeo/services/firebase_services.dart';
+import 'package:multigeo/screens/dispositivos.dart';
+import 'package:multigeo/provider/dispositivo.dart';
 
 
 
 class MapaScreen extends StatefulWidget {
-  const MapaScreen({Key? key}) : super(key: key);
+  final Dispositivo dispositivo;
+   const MapaScreen({Key? key, required this.dispositivo}) : super(key: key);
 
   @override
   _MapaScreenState createState() => _MapaScreenState();
 }
 
 class _MapaScreenState extends State<MapaScreen> {
+  
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -26,11 +30,11 @@ class _MapaScreenState extends State<MapaScreen> {
   @override
   void initState() {
     super.initState();
-    _loadCameraPositions();
+    _loadCameraPositions(widget.dispositivo.nombre);
   }
 
-Future<void> _loadCameraPositions() async {
-  Map<String, dynamic> ubicacion = await _firebaseServices.getLatLong();
+Future<void> _loadCameraPositions(String nombreDispositivo) async {
+  Map<String, dynamic> ubicacion = await _firebaseServices.getLatLong(nombreDispositivo);
   print('Ubicacion: $ubicacion');
   if (ubicacion.isNotEmpty) {
     double lat = double.parse(ubicacion['Lat']);
@@ -74,7 +78,7 @@ Future<void> _loadCameraPositions() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gabriel"),
+        title: const Text("yo"),
       ),
       body: _ubicacion != null
           ? GoogleMap(
