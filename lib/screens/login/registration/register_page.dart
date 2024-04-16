@@ -1,15 +1,12 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:multigeo/screens/dispositivos.dart';
 import 'package:multigeo/screens/login/login/login_page.dart';
 import 'package:multigeo/services/push_notification.dart';
 import 'package:multigeo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
-import 'package:multigeo/provider/dispositivo.dart';
 import 'package:intl/intl.dart';
 import 'package:multigeo/provider/register_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:multigeo/utils/showsnackbar.dart';
 import 'package:multigeo/widgets/upload_image.dart';
 
@@ -108,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
         await FirebaseAuth.instance.currentUser!.sendEmailVerification();
         showSnackbar(context, "Confirme en su correo electronico");
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => DispositivosScreen()),
+          MaterialPageRoute(builder: (context) => LoginPage()),
           (Route<dynamic> route) => false,
         );
         setState(() {
