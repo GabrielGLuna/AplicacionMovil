@@ -4,6 +4,7 @@ import 'package:multigeo/provider/login_provider.dart';
 import 'package:multigeo/screens/dispositivos.dart';
 import 'package:multigeo/screens/login/registration/register_page.dart';
 import 'package:multigeo/services/local_storage.dart';
+import 'package:multigeo/theme/app_theme.dart';
 import 'package:multigeo/utils/showsnackbar.dart';
 import 'package:provider/provider.dart';
 import '../../../services/push_notification.dart';
@@ -116,116 +117,124 @@ void onformLogin(String usernameOrEmail, String password, context) async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            height: 200,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 1, 1, 1),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-            ),
-            child: const Center(
-              child: Text(
-                'Login',
-                style: TextStyle(color: Colors.blueAccent, fontSize: 30, fontWeight: FontWeight.bold),
-              ),
+      body: Center(
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/bg-app.jpg'),
+              fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: 20),
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Form(
-                key: _formkey,
-                child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "user@example.com",
-                        labelText: "Ingrese su correo o email",
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            _emailOrEmailController.clear();
-                          },
-                          icon: const Icon(Icons.cancel, color: Colors.grey),
-                        ),
-                      ),
-                      controller: _emailOrEmailController,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor, ingrese un correo válido';
-                        }
-                        if (!value.contains('@')) {
-                          return 'Ingrese una dirección de correo válida';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "******",
-                        labelText: "Ingrese su contraseña",
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isObscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+          child: Column(  
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Inicio de Sesion', style: TextStyle(fontSize: 25),),
+              const SizedBox(height: 20),
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Form(
+                    key: _formkey,
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            hintText: "user@example.com",
+                            labelText: "Ingrese su correo o email",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                _emailOrEmailController.clear();
+                              },
+                              icon: const Icon(Icons.cancel, color: AppTheme.color2),
+                            ),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
+                          controller: _emailOrEmailController,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, ingrese un correo válido';
+                            }
+                            if (!value.contains('@')) {
+                              return 'Ingrese una dirección de correo válida';
+                            }
+                            return null;
                           },
                         ),
-                      ),
-                      controller: _passwordController,
-                      keyboardType: TextInputType.visiblePassword,
-                      obscureText: _isObscure,
-                      validator: _passwordValidator,
-                    ),
-                    const SizedBox(height: 20),
-                    _isLoading
-                        ? const CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-                          )
-                        : ElevatedButton(
-                            onPressed: () {
-                              onformLogin(
-                                _emailOrEmailController.text,
-                                _passwordController.text,
-                                context,
-                              );
-                            },
-                            child: const Text('Iniciar sesión'),
-                          ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("¿No tienes cuenta?"),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RegisterPage(),
+                        const SizedBox(height: 40),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            hintText: "******",
+                            labelText: "Ingrese su contraseña",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isObscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                                color: AppTheme.color2,
                               ),
-                            );
-                          },
-                          child: const Text("Registrate"),
+                              onPressed: () {
+                                setState(() {
+                                  _isObscure = !_isObscure;
+                                });
+                              },
+                            ),
+
+                          ),
+                          controller: _passwordController,
+                          keyboardType: TextInputType.visiblePassword,
+                          obscureText: _isObscure,
+                          validator: _passwordValidator,
+                        ),
+                        const SizedBox(height: 20),
+                        _isLoading
+                            ? const CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+                              )
+                            :  ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<Color>(AppTheme.boton1)
+                              ),
+                                onPressed: () {
+                                  onformLogin(
+                                    _emailOrEmailController.text,
+                                    _passwordController.text,
+                                    context,
+                                  );
+                                },
+                                child: const Text('Iniciar sesión', style: TextStyle(color: Colors.white),),
+                              ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("¿No tienes cuenta?"),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RegisterPage(),
+                                  ),
+                                );
+                              },
+                              child: const Text("Registrate", style: TextStyle(color: AppTheme.boton1),),
+                            )
+                          ],
                         )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

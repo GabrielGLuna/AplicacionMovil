@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:multigeo/screens/dispositivos.dart';
 import 'package:multigeo/screens/login/login/login_page.dart';
 import 'package:multigeo/services/push_notification.dart';
+import 'package:multigeo/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:multigeo/provider/dispositivo.dart';
 import 'package:intl/intl.dart';
@@ -155,166 +156,188 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold( 
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        centerTitle:true ,
-        title: const Text('Register', style: TextStyle(color: Colors.blue),)),
-      body:  Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                height: 200,
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 1, 1, 1),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    )
-                ),
-                child: const Center(
-                  child: Text('Login', style: TextStyle(color:  Colors.blueAccent, fontSize: 30, fontWeight: FontWeight.bold),),
-                ),
-              ),
-              const SizedBox(height: 20),
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Form(
-                      key: _registerFormKey,
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(height: 20),
-                          InkWell(
-                            onTap: (){
-                              selectedImage();
-                            },
-                            child: 
-                            CircleAvatar(
-                              radius: 60,
-                              backgroundColor: Colors.blueGrey,
-                              child: image != null
-                                  ? CircleAvatar(
-                                radius: 60,
-                                backgroundImage: FileImage(image!),
-                              ): Container(),
-                            )),
-                          const SizedBox(height: 20),
-
-                          TextFormField(
-                            decoration: InputDecoration(
-                              hintText: "Nombre de Usuario", 
-                              labelText: "Ingrese su username",
-                              suffixIcon: IconButton(onPressed: () {
-                                // Lógica para borrar el contenido del campo de correo
-                                _usernameControler.clear();
-                              }, icon: const Icon(Icons.cancel, color: Colors.grey),
-                              ),
-                            ),            
-                            controller: _usernameControler ,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Por favor, ingrese un usuario válido';
-                              }
-                              return null; // No hay errores
-                            },
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          TextFormField(
-                            decoration: InputDecoration(
-                              hintText: "user@example.com", 
-                              labelText: "Ingrese su email",
-                              suffixIcon: IconButton(onPressed: () {
-                                // Lógica para borrar el contenido del campo de correo
-                                _emailController.clear();
-                              }, icon: const Icon(Icons.cancel, color: Colors.grey),
-                              ),
-                            ),            
-                            controller: _emailController ,
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Por favor, ingrese un correo válido';
-                              }
-                              if (!value.contains('@')) {
-                                return 'Ingrese una dirección de correo válida';
-                              }
-                              return null; // No hay errores
-                            },
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          TextFormField(
-                            decoration: InputDecoration(
-                                hintText: "******",
-                                labelText: "Ingrese su contraseña",
-                                suffixIcon: IconButton(
-                                    icon:  Icon(
-                                      _isObscure
-                                          ? Icons.visibility_off_outlined
-                                          : Icons.visibility_outlined,
-                                    ),
-                                    onPressed: (){
-                                      setState(() {
-                                        _isObscure = !_isObscure;
-                                      });
-                                    }
-                                )),
-                            controller: _passwordController,
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: _isObscure,
-                            validator: _passwordValidator,
-                          ),
-                          const SizedBox( height: 30),
-
-                          getBirth(context),
-
-                          const SizedBox( height: 30),
-
-                          _isLoading
-                              ? const CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.blueAccent
-                            ),
-                          )
-                              : ElevatedButton(
-                            onPressed: () => submitRegister(),
-                            child: const Text('Registrarse'),
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text("¿Ya tienes cuenta?"),
-                              TextButton(
-                                  onPressed: (){
-                                    Navigator.pushNamed(context, "/loginr");
-                                  }, 
-                                  child: const Text("Inicia Sesion"))
-                            ],
-                          )
-                        ],
-                      )
-                  )
-                ),
-              ),
-            ],
+      
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/bg-reg.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-      ));
+        child: Center(
+                     
+              child: SingleChildScrollView(
+                   child: Column(
+                    children: [
+                      
+                      const SizedBox(height: 20),
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Form(
+                              key: _registerFormKey,
+                              child: Column(
+                                children: <Widget>[
+                                  const SizedBox(height: 20),
+                                  InkWell(
+                                    onTap: (){
+                                      selectedImage();
+                                    },
+                                    child: 
+                                    CircleAvatar(
+                                      radius: 60,
+                                      backgroundColor: Colors.white,
+                                      child: image != null
+                                          ? CircleAvatar(
+                                        radius: 60,
+                                        backgroundImage: FileImage(image!),
+                                      ): Container(
+                                        child: const Icon(Icons.camera_alt_outlined, color: AppTheme.color1,),
+                                      ),
+                                    )),
+                                  const SizedBox(height: 20),
+                  
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      hintText: "Nombre de Usuario", 
+                                      labelText: "Ingrese su username",
+                                      border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  
+                                ),
+                                      suffixIcon: IconButton(onPressed: () {
+                                        // Lógica para borrar el contenido del campo de correo
+                                        _usernameControler.clear();
+                                      }, icon: const Icon(Icons.cancel, color: Colors.grey),
+                                      ),
+                                    ),            
+                                    controller: _usernameControler ,
+                                    keyboardType: TextInputType.text,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Por favor, ingrese un usuario válido';
+                                      }
+                                      return null; // No hay errores
+                                    },
+                                  ),
+                  
+                                  const SizedBox(height: 20),
+                  
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      hintText: "user@example.com", 
+                                      labelText: "Ingrese su email",
+                                      border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  
+                                ),
+                                      suffixIcon: IconButton(onPressed: () {
+                                        // Lógica para borrar el contenido del campo de correo
+                                        _emailController.clear();
+                                      }, icon: const Icon(Icons.cancel, color: Colors.grey),
+                                      ),
+                                    ),            
+                                    controller: _emailController ,
+                                    keyboardType: TextInputType.emailAddress,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Por favor, ingrese un correo válido';
+                                      }
+                                      if (!value.contains('@')) {
+                                        return 'Ingrese una dirección de correo válida';
+                                      }
+                                      return null; // No hay errores
+                                    },
+                                  ),
+                  
+                                  const SizedBox(height: 20),
+                  
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                        hintText: "******",
+                                        labelText: "Ingrese su contraseña",
+                                        border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  
+                                ),
+                                        suffixIcon: IconButton(
+                                            icon:  Icon(
+                                              _isObscure
+                                                  ? Icons.visibility_off_outlined
+                                                  : Icons.visibility_outlined,
+                                            ),
+                                            onPressed: (){
+                                              setState(() {
+                                                _isObscure = !_isObscure;
+                                              });
+                                            }
+                                        )),
+                                    controller: _passwordController,
+                                    keyboardType: TextInputType.visiblePassword,
+                                    obscureText: _isObscure,
+                                    validator: _passwordValidator,
+                                  ),
+                                  const SizedBox( height: 30),
+                  
+                                  getBirth(context),
+                  
+                                  const SizedBox( height: 30),
+                  
+                                  _isLoading
+                                      ? const CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.blueAccent
+                                    ),
+                                  )
+                                      : ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(AppTheme.color3)
+                                    ),
+                                    onPressed: () => submitRegister(),
+                                    child: const Text('Registrarse', style: TextStyle(color: Colors.white),),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text("¿Ya tienes cuenta?"),
+                                      TextButton(
+                                          onPressed: (){
+                                             Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                );
+                                          }, 
+                                          child: const Text("Inicia Sesion", style: TextStyle(color: Colors.white),))
+                                    ],
+                                  )
+                                ],
+                              )
+                          )
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ),
+      ),
+      
+          
+      );
   }
 
   Widget getBirth(BuildContext context){
     return TextFormField(
-      decoration: const InputDecoration(
+      decoration:  InputDecoration(
           hintText: "dd/mm/yyy",
           labelText: "Ingrese su fecha de nacimiento",
-          suffixIcon: Icon(Icons.calendar_today_outlined)
+          suffixIcon: const Icon(Icons.calendar_today_outlined),
+          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              
+                            ),
       ),
       controller: _birthControler,
       validator: dateValidator,
@@ -335,6 +358,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         onSurface: Colors.black12
                     ),
                     dialogBackgroundColor: Colors.indigo,
+                    
                     textButtonTheme: TextButtonThemeData(
                         style: ButtonStyle(
                             foregroundColor: MaterialStateProperty.all(Colors.black38)
